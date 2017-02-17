@@ -2,6 +2,7 @@
 const restful = require('node-restful')
 const mongoose = restful.mongoose
 
+
 //Criação dos schemas
 const creditoSchema = new mongoose.Schema({
   tipo: {type: String, required: true, uppercase: true, enum: ['MENSALIDADE', 'INSTALAÇÃO', 'VENDA', 'EMPRESTIMO', 'OUTROS']},
@@ -32,5 +33,6 @@ const cicloPagamentoSchema = new mongoose.Schema({
   creditos: [creditoSchema],
   debitos: [debitoSchema]
 })
+
 
 module.exports = restful.model('CicloPagamento', cicloPagamentoSchema)

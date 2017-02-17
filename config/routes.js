@@ -5,8 +5,9 @@ module.exports = function (server) {
   const router = express.Router()
   //Api das rotas
   server.use('/api', router)
+
   //Import dos methods da api CicloPagamento
-  const cicloPagamento = require('../api/cicloPagamento/cicloPagamentoService')
+  const cicloPagamento = require('../api/cicloPagamento/cicloPagamentoService2')
   //Registrando o serviço no roteador
   cicloPagamento.register(router, '/cicloPagamentos')
 
