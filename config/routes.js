@@ -1,17 +1,33 @@
 const express = require('express')
 
 module.exports = function (server) {
-  //Router api
   const router = express.Router()
-  //Api das rotas
   server.use('/api', router)
 
-  //Import dos methods da api CicloPagamento
-  const cicloPagamento = require('../api/cicloPagamento/cicloPagamentoService2')
-  //Registrando o serviço no roteador
-  cicloPagamento.register(router, '/cicloPagamentos')
+
+
 
   const cicloPagamentoSumarioService = require('../api/cicloPagamentoSumario/cicloPagamentoSumarioService')
+  router.get('/cicloPagamentoSumario', cicloPagamentoSumarioService.getSumario)
+  const cicloPagamentoService = require('../api/cicloPagamento/cicloPagamentoService')
+  router.post('/cicloPagamento', cicloPagamentoService.inserir)
+  router.get('/cicloPagamento', cicloPagamentoService.listar)
+  router.get('/cicloPagamento/:id', cicloPagamentoService.buscarPorId)
+  router.get('/cicloPagamentoContador', cicloPagamentoService.contador)
+  router.put('/cicloPagamento/:id', cicloPagamentoService.atualizar)
+  router.delete('/cicloPagamento/:id', cicloPagamentoService.excluir)
 
-  router.route('/getSumario').get(cicloPagamentoSumarioService.getSumario)
+  const creditoService = require('../api/cicloPagamento/creditoService')
+  router.post('/credito/:id', creditoService.inserir)
+  router.put('/credito/:id', creditoService.atualizar)
+  router.delete('/credito/:cicloId/:creditoId', creditoService.excluir)
+
+  const debitoService = require('../api/cicloPagamento/debitoService')
+  router.post('/debito/:id', debitoService.inserir)
+  router.put('/debito/:id', debitoService.atualizar)
+  router.delete('/debito/:cicloId/:debitoId', debitoService.excluir)
+
+
+
+
 }

@@ -1,13 +1,12 @@
-//Mapeamento restful do node
 const restful = require('node-restful')
 const mongoose = restful.mongoose
 
 
 //Criação dos schemas
 const creditoSchema = new mongoose.Schema({
-  tipo: {type: String, required: true, uppercase: true, enum: ['MENSALIDADE', 'INSTALAÇÃO', 'VENDA', 'EMPRESTIMO', 'OUTROS']},
-  descricao: {type: String, required: false},
-  devedor: {type: String, required: true},
+  tipo: {type: String, required: true, uppercase: true, enum: ['MENSALIDADE', 'INSTALACAO', 'VENDA', 'EMPRESTIMO', 'OUTROS']},
+  descricao: {type: String, required: false, uppercase: true},
+  devedor: {type: String, required: true, uppercase: true},
   valor: {type: Number, required: true, min: 0},
   status: {type: String, required: true, uppercase: true, num: ['RECEBIDO', 'AGENDADO', 'PENDENTE', 'CANCELADO']},
   statusCaixa: {type: String, required: true, uppercase: true, num: ['REPASSADO', 'NAO REPASSADO']},
@@ -27,12 +26,11 @@ const debitoSchema = new mongoose.Schema({
 })
 
 const cicloPagamentoSchema = new mongoose.Schema({
-  nome: {type: String, required: true, unique: true},
+  nome: {type: String, required: true},
   mes: {type: Number, required: true, min: 0, max: 12},
   ano: {type: Number, required: true, min: 2000, max: 2100},
   creditos: [creditoSchema],
   debitos: [debitoSchema]
 })
-
 
 module.exports = restful.model('CicloPagamento', cicloPagamentoSchema)

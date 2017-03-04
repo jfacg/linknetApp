@@ -4,13 +4,14 @@
   "description": "",
   "main": "loader.js",
   "scripts": {
-    "dev" : "nodemon",
+    "dev": "nodemon",
     "production": "pm2 start loader.js --name backend"
   },
   "dependencies": {
     "body-parser": "^1.16.0",
     "express": "^4.14.1",
     "express-query-int": "^1.0.1",
+    "express-validator": "^3.1.2",
     "lodash": "^4.17.4",
     "mongoose": "^4.8.1",
     "mongoose-paginate": "^5.0.3",
@@ -30,5 +31,4 @@
     "url": "https://github.com/jfacg/LinknetApp/issues"
   },
   "homepage": "https://github.com/jfacg/LinknetApp#readme"
-
 }
