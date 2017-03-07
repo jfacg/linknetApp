@@ -1,4 +1,4 @@
-const CicloPagamento = require('./cicloPagamento')
+const Caixa = require('./caixa')
 const _ = require('lodash')
 
 function Errors(error) {
@@ -14,7 +14,7 @@ function Errors(error) {
 
 function inserir (req, res, next) {
   var credito = req.body
-  CicloPagamento.findOneAndUpdate({
+  Caixa.findOneAndUpdate({
     _id: req.params.id
   }, {
           $push: {creditos: credito}
@@ -22,19 +22,19 @@ function inserir (req, res, next) {
     // upsert: true,
     new: true,
     runValidators: true,
-  }, function(error, cicloPagamento) {
+  }, function(error, caixa) {
     if(error) {
       // var errors = Errors(error)
-      res.status(500).json({error})
+      res.status(500).json(error)
     } else {
-      res.json(cicloPagamento)
+      res.json(caixa)
     }
   })
 }
 
 function atualizar(req, res) {
-  
-  CicloPagamento.findOneAndUpdate({
+
+  Caixa.findOneAndUpdate({
     _id: req.params.id,
     "creditos._id": req.body._id
   }, {
@@ -43,18 +43,18 @@ function atualizar(req, res) {
     // upsert: true,
     new: true,
     runValidators: true,
-  }, function(error, cicloPagamento) {
+  }, function(error, caixa) {
     if(error) {
       // var errors = Errors(error)
       res.status(500).json({error})
     } else {
-      res.json(cicloPagamento)
+      res.json(caixa)
     }
   })
 }
 
 function listar(req, res) {
-  CicloPagamento.find(function(error, result) {
+  Caixa.find(function(error, result) {
       if(error) {
         res.status(500).json({error: error})
       } else {
@@ -64,17 +64,17 @@ function listar(req, res) {
 }
 
 function buscarPorId(req, res) {
-  CicloPagamento.findById(req.params.id, function(error, cicloPagamento) {
+  Caixa.findById(req.params.id, function(error, caixa) {
     if(error) {
       sendErrorsOrNext
     } else {
-      res.json(cicloPagamento)
+      res.json(caixa)
     }
   })
 }
 
 function contador(req, res, next) {
-  CicloPagamento.count(function (error, value) {
+  Caixa.count(function (error, value) {
     if(error){
       sendErrorsOrNext
     } else {
@@ -86,7 +86,7 @@ function contador(req, res, next) {
 
 function excluir(req, res) {
 
-  CicloPagamento.findOneAndUpdate({
+  Caixa.findOneAndUpdate({
     _id: req.params.cicloId
   }, {
           $pull: {creditos: {_id: req.params.creditoId}}
@@ -94,12 +94,12 @@ function excluir(req, res) {
     // upsert: true,
     new: true,
     runValidators: true,
-  }, function(error, cicloPagamento) {
+  }, function(error, caixa) {
     if(error) {
       // var errors = Errors(error)
       res.status(500).json({error})
     } else {
-      res.json(cicloPagamento)
+      res.json(caixa)
     }
   })
 }

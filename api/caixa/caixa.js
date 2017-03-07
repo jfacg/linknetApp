@@ -1,5 +1,7 @@
 const restful = require('node-restful')
+const uniqueValidator = require('mongoose-unique-validator');
 const mongoose = restful.mongoose
+
 
 
 //Criação dos schemas
@@ -15,7 +17,7 @@ const creditoSchema = new mongoose.Schema({
 })
 
 const debitoSchema = new mongoose.Schema({
-  tipo: {type: String, required: true, uppercase: true, enum: ['COMPRA', 'SALARIO', 'CONTA', 'OUTROS']},
+  tipo: {type: String, required: true, uppercase: true, enum: ['COMPRA', 'SALARIO', 'CONTA', 'OUTRO']},
   descricao: {type: String, required: false},
   credor: {type: String, required: true},
   valor: {type: Number, required: true, min: 0},
@@ -25,12 +27,14 @@ const debitoSchema = new mongoose.Schema({
   data: {type: Date, required: true}
 })
 
-const cicloPagamentoSchema = new mongoose.Schema({
-  nome: {type: String, required: true},
+const caixaSchema = new mongoose.Schema({
+  nome: {type: String, unique: true},
   mes: {type: Number, required: true, min: 0, max: 12},
   ano: {type: Number, required: true, min: 2000, max: 2100},
   creditos: [creditoSchema],
   debitos: [debitoSchema]
 })
 
-module.exports = restful.model('CicloPagamento', cicloPagamentoSchema)
+caixaSchema.plugin(uniqueValidator, { message: 'Caixa já cadastrado' })
+
+module.exports = restful.model('Caixa', caixaSchema)

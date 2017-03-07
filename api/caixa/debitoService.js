@@ -1,4 +1,4 @@
-const CicloPagamento = require('./cicloPagamento')
+const Caixa = require('./caixa')
 const _ = require('lodash')
 
 function Errors(error) {
@@ -14,7 +14,7 @@ function Errors(error) {
 
 function inserir (req, res, next) {
   var debito = req.body
-  CicloPagamento.findOneAndUpdate({
+  Caixa.findOneAndUpdate({
     _id: req.params.id
   }, {
           $push: {debitos: debito}
@@ -34,7 +34,7 @@ function inserir (req, res, next) {
 
 function atualizar(req, res) {
 
-  CicloPagamento.findOneAndUpdate({
+  Caixa.findOneAndUpdate({
     _id: req.params.id,
     "debitos._id": req.body._id
   }, {
@@ -54,7 +54,7 @@ function atualizar(req, res) {
 }
 
 function listar(req, res) {
-  CicloPagamento.find(function(error, result) {
+  Caixa.find(function(error, result) {
       if(error) {
         res.status(500).json({error: error})
       } else {
@@ -64,7 +64,7 @@ function listar(req, res) {
 }
 
 function buscarPorId(req, res) {
-  CicloPagamento.findById(req.params.id, function(error, cicloPagamento) {
+  Caixa.findById(req.params.id, function(error, cicloPagamento) {
     if(error) {
       sendErrorsOrNext
     } else {
@@ -74,7 +74,7 @@ function buscarPorId(req, res) {
 }
 
 function contador(req, res, next) {
-  CicloPagamento.count(function (error, value) {
+  Caixa.count(function (error, value) {
     if(error){
       sendErrorsOrNext
     } else {
@@ -86,7 +86,7 @@ function contador(req, res, next) {
 
 function excluir(req, res) {
 
-  CicloPagamento.findOneAndUpdate({
+  Caixa.findOneAndUpdate({
     _id: req.params.cicloId
   }, {
           $pull: {debitos: {_id: req.params.debitoId}}
