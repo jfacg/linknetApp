@@ -14,15 +14,20 @@ module.exports = function (server) {
   router.get('/caixaContador', caixaService.contador)
 
   const creditoService = require('../api/caixa/creditoService')
-  router.post('/credito/:id', creditoService.inserir)
-  router.put('/credito/:id', creditoService.atualizar)
-  router.delete('/credito/:cicloId/:creditoId', creditoService.excluir)
+  router.get('/credito/:caixaId', creditoService.listar)
+  router.post('/credito/:caixaId', creditoService.inserir)
+  router.put('/credito/:caixaId', creditoService.atualizar)
+  router.delete('/credito/:caixaId/:creditoId', creditoService.excluir)
+  router.get('/creditoCount/:caixaId', creditoService.count)
+  router.get('/credito/:caixaId/:skip/:limit', creditoService.paginate)
 
   const debitoService = require('../api/caixa/debitoService')
-  router.post('/debito/:id', debitoService.inserir)
-  router.put('/debito/:id', debitoService.atualizar)
-  router.delete('/debito/:cicloId/:debitoId', debitoService.excluir)
-
+  router.get('/debito/:caixaId', debitoService.listar)
+  router.post('/debito/:caixaId', debitoService.inserir)
+  router.put('/debito/:caixaId', debitoService.atualizar)
+  router.delete('/debito/:caixaId/:debitoId', debitoService.excluir)
+  router.get('/debitoCount/:caixaId', debitoService.count)
+  router.get('/debito/:caixaId/:skip/:limit', debitoService.paginate)
 
 
 

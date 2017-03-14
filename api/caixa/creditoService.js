@@ -15,16 +15,14 @@ function Errors(error) {
 function inserir (req, res, next) {
   var credito = req.body
   Caixa.findOneAndUpdate({
-    _id: req.params.id
+    _id: req.params.caixaId
   }, {
           $push: {creditos: credito}
   }, {
-    // upsert: true,
     new: true,
     runValidators: true,
   }, function(error, caixa) {
     if(error) {
-      // var errors = Errors(error)
       res.status(500).json(error)
     } else {
       res.json(caixa)
@@ -35,17 +33,15 @@ function inserir (req, res, next) {
 function atualizar(req, res) {
 
   Caixa.findOneAndUpdate({
-    _id: req.params.id,
+    _id: req.params.caixaId,
     "creditos._id": req.body._id
   }, {
           $set: {"creditos.$": req.body}
   }, {
-    // upsert: true,
     new: true,
     runValidators: true,
   }, function(error, caixa) {
     if(error) {
-      // var errors = Errors(error)
       res.status(500).json({error})
     } else {
       res.json(caixa)
@@ -54,16 +50,29 @@ function atualizar(req, res) {
 }
 
 function listar(req, res) {
-  Caixa.find(function(error, result) {
-      if(error) {
-        res.status(500).json({error: error})
-      } else {
-        res.json(result)
-      }
+  Caixa.findOne({ _id: req.params.caixaId},'creditos', function (err, resultado) {
+    if (err) {
+      res.status(500).json({err})
+    } else {
+      res.json(resultado.creditos)
+    }
   })
 }
 
-function buscarPorId(req, res) {
+function paginate(req, res) {
+  let id = req.params.caixaId
+  let skip = parseInt(req.params.skip)
+  let limit = parseInt(req.params.limit)
+  Caixa.find({_id: id}, {creditos: {'$slice': [skip, limit]}}, function (err, resultado) {
+    if (err) {
+        res.status(500).json({err})
+    } else {
+      res.json(resultado[0].creditos)
+    }
+  })
+}
+
+function buscarPorId(req, res, next) {
   Caixa.findById(req.params.id, function(error, caixa) {
     if(error) {
       sendErrorsOrNext
@@ -73,30 +82,28 @@ function buscarPorId(req, res) {
   })
 }
 
-function contador(req, res, next) {
-  Caixa.count(function (error, value) {
-    if(error){
-      sendErrorsOrNext
+function count(req, res, next) {
+  Caixa.findOne({ _id: req.params.caixaId}, function (err, result) {
+    if (err) {
+      res.status(500).json({err})
     } else {
-      res.json({value})
+      let count = {value : result.creditos.length}
+      res.json(count)
     }
-  })
+  });
 }
 
 
-function excluir(req, res) {
-
+function excluir(req, res, next) {
   Caixa.findOneAndUpdate({
-    _id: req.params.cicloId
+    _id: req.params.caixaId
   }, {
           $pull: {creditos: {_id: req.params.creditoId}}
   }, {
-    // upsert: true,
     new: true,
     runValidators: true,
   }, function(error, caixa) {
     if(error) {
-      // var errors = Errors(error)
       res.status(500).json({error})
     } else {
       res.json(caixa)
@@ -105,4 +112,4 @@ function excluir(req, res) {
 }
 
 
-module.exports = {contador, excluir, listar, inserir, atualizar, buscarPorId}
+module.exports = {count, excluir, listar, inserir, atualizar, buscarPorId, paginate}

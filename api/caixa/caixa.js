@@ -1,7 +1,7 @@
-const restful = require('node-restful')
-const uniqueValidator = require('mongoose-unique-validator');
-const mongoose = restful.mongoose
-
+// const restful = require('node-restful')
+const uniqueValidator = require('mongoose-unique-validator')
+const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate')
 
 
 //Criação dos schemas
@@ -36,5 +36,5 @@ const caixaSchema = new mongoose.Schema({
 })
 
 caixaSchema.plugin(uniqueValidator, { message: 'Caixa já cadastrado' })
-
-module.exports = restful.model('Caixa', caixaSchema)
+caixaSchema.plugin(mongoosePaginate)
+module.exports = mongoose.model('Caixa', caixaSchema)
