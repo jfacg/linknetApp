@@ -1,10 +1,7 @@
-// const restful = require('node-restful')
 const uniqueValidator = require('mongoose-unique-validator')
 const mongoose = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate')
 
-
-//Criação dos schemas
 const creditoSchema = new mongoose.Schema({
   tipo: {type: String, required: true, uppercase: true, enum: ['MENSALIDADE', 'INSTALACAO', 'VENDA', 'EMPRESTIMO', 'OUTROS']},
   descricao: {type: String, required: false, uppercase: true},

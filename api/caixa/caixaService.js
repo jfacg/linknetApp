@@ -16,7 +16,6 @@ function Errors(error) {
 }
 
 function inserir (req, res, next) {
-
   const caixa =  new Caixa
   caixa.mes = req.body.mes
   caixa.ano = req.body.ano
@@ -31,30 +30,9 @@ function inserir (req, res, next) {
   })
 }
 
-function atualizar(req, res) {
-  Caixa.findOneAndUpdate({
-    _id: req.params.id
-  }, {
-    $set: req.body
-  }, {
-    // upsert: true,
-    new: true,
-    runValidators: true,
-  }, function(error, caixa) {
-    if(error) {
-      var errors = Errors(error)
-      res.status(500).json({errors})
-    } else {
-      res.json(caixa)
-    }
-  })
-}
-
-function listarCaixas(req, res) {
+function listar(req, res) {
   Caixa.aggregate({
-
     $project: {nome: 1, mes: 1, ano: 1}
-
     },
     function(error, resultado) {
       if(error) {
@@ -65,12 +43,42 @@ function listarCaixas(req, res) {
   })
 }
 
-function buscarPorId(req, res) {
+function listarPorId(req, res) {
   Caixa.findById(req.params.id, function(error, caixa) {
     if(error) {
       sendErrorsOrNext
     } else {
       res.json(caixa)
+    }
+  })
+}
+
+function excluir(req, res) {
+  Caixa.remove({_id: req.params.id}, function(error) {
+    if(error) {
+      sendErrorsOrNext
+    } else {
+      res.send()
+    }
+  })
+}
+
+function atualizar(req, res) {
+
+  Caixa.findById(req.params.id, function (error, caixa) {
+    if (error) {
+      res.status(500).json(error)
+    } else {
+      caixa.nome = req.body.nome;
+      caixa.mes = req.body.mes;
+      caixa.ano = req.body.ano;
+      caixa.save(function (error) {
+        if (error) {
+          res.status(500).json(error)
+        } else {
+          res.json(caixa)
+        }
+      })
     }
   })
 }
@@ -85,15 +93,21 @@ function contador(req, res, next) {
   })
 }
 
-function excluir(req, res) {
-  Caixa.remove({_id: req.params.id}, function(error) {
-    if(error) {
-      sendErrorsOrNext
-    } else {
-      res.status(200).send()
+function getResumo(req, res) {
+
+  Caixa.aggregate(
+    {$project: {nome:1, creditos:{coletor: 1, statusCaixa: 1, valor: 1} }},
+    function (error, resuldado) {
+      if (error) {
+        res.status(500).json(error)
+      } else {
+        res.json(resuldado)
+      };
     }
-  })
+  );
+
 }
+
 
 //Serviço de sumarizar
 function getSumario(req, res) {
@@ -116,4 +130,4 @@ function getSumario(req, res) {
 }
 
 
-module.exports = {contador, excluir, listarCaixas, inserir, atualizar, buscarPorId, getSumario}
+module.exports = { inserir, listar, listarPorId, excluir, contador, atualizar, getSumario, getResumo}

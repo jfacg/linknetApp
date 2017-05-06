@@ -1,3 +1,4 @@
+// const mysql = require('mysql');
 //Mapeador de conexão com banco de dados MongoDB
 const mongoose = require('mongoose')
 //Conexão com o banco de dados

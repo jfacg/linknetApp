@@ -95,6 +95,7 @@ function count(req, res, next) {
 
 
 function excluir(req, res, next) {
+  console.log('oiii');
   Caixa.findOneAndUpdate({
     _id: req.params.caixaId
   }, {
