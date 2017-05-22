@@ -1,11 +1,11 @@
 const Cliente = require('./cliente');
 
-function inserir(obj) {
+function save(obj) {
     const cliente = new Cliente;
     cliente.nome = obj.nome;
     cliente.cpf_cnpj = obj.cpf_cnpj;
     cliente.nascimento = obj.nascimento;
-    cliente. email = obj.email;
+    cliente.email = obj.email;
     cliente.fone = obj.fone;
     cliente.celular = obj.celular;
     cliente.celular2 = obj.celular2;
@@ -37,13 +37,28 @@ function inserir(obj) {
 };
 
 function findByCpf(cpf) {
-    return Cliente.findOne({cpf_cnpj: cpf}, function (error, result) {
+    return Cliente.findOne({ cpf_cnpj: cpf }, function (error, result) {
         if (error) return error;
         return result;
     });
 };
 
+function findOneAndUpdate(obj) {
+
+    return Cliente.findOneAndUpdate({
+        cpf_cnpj: obj.cpf_cnpj
+    }, obj,
+        {
+            upsert: true,
+            new: true,
+            runValidators: true,
+        }, function (error, result) {
+            if (error) return error;
+            return result;
+        });
+};
 
 
 
-module.exports = {inserir, findByCpf};
+
+module.exports = { save, findByCpf, findOneAndUpdate};

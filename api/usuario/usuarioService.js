@@ -2,8 +2,8 @@ const Usuario = require('./usuario')
 const jwt = require('jsonwebtoken')
 const secret = 'linknet'
 
-function inserir (req, res, next) {
-  const usuario =  new Usuario
+function inserir(req, res, next) {
+  const usuario = new Usuario
   usuario.nome = req.body.nome
   usuario.login = req.body.login
   usuario.senha = req.body.senha
@@ -13,7 +13,7 @@ function inserir (req, res, next) {
 
   usuario.save(function (error) {
     if (error) {
-      res.status(500).json({error})
+      res.status(500).json({ error })
     } else {
       res.json(usuario)
     }
@@ -22,50 +22,67 @@ function inserir (req, res, next) {
 
 function listar(req, res) {
   Usuario.find({},
-    function(error, usuarios) {
-      if(error) {
-        res.status(500).json({error})
+    function (error, usuarios) {
+      if (error) {
+        res.status(500).json({ error })
       } else {
         res.json(usuarios)
       }
-  })
+    })
 }
 
 function listarPorId(req, res) {
-  Usuario.findById(req.params.usuarioId, function(error, usuario) {
-    if(error) {
-      res.status(500).json({error})
+  Usuario.findById(req.params.usuarioId, function (error, usuario) {
+    if (error) {
+      res.status(500).json({ error })
     } else {
       res.json(usuario)
     }
   })
 }
 
-function excluir(req, res) {
-  Usuario.remove({_id: req.params.usuarioId}, function(error) {
-    if(error) {
-      res.status(500).json({error})
+function apagar(req, res) {
+  Usuario.remove({ _id: req.params.usuarioId }, function (error) {
+    if (error) {
+      res.status(500).json({ error })
     } else {
       res.status(200).send()
     }
   })
 }
 
+function excluir(req, res) {
+  Usuario.findOneAndUpdate({
+    _id: req.params.usuarioId
+  }, {
+      $set: {excluido: 'S'}
+    }, {
+      new: true,
+      runValidators: true,
+    }, function (error, usuario) {
+      if (error) {
+        res.status(500).json({ error })
+      } else {
+        res.json(usuario)
+      }
+    })
+}
+
 function atualizar(req, res) {
   Usuario.findOneAndUpdate({
     _id: req.params.usuarioId
   }, {
-    $set: req.body
-  }, {
-    new: true,
-    runValidators: true,
-  }, function(error, usuario) {
-    if(error) {
-      res.status(500).json({error})
-    } else {
-      res.json(usuario)
-    }
-  })
+      $set: req.body
+    }, {
+      new: true,
+      runValidators: true,
+    }, function (error, usuario) {
+      if (error) {
+        res.status(500).json({ error })
+      } else {
+        res.json(usuario)
+      }
+    })
 }
 
 function autenticar(req, res, next) {
@@ -74,11 +91,16 @@ function autenticar(req, res, next) {
     senha: req.body.senha
   }
 
-  Usuario.findOne(credencial, function (error, usuario){
+  Usuario.findOne(credencial, function (error, usuario) {
     if (usuario == null) {
-      return res.status(500).json({msg: 'Usuario ou senha não confere'})
+      return res.status(500).json({ msg: 'Usuario ou senha não confere' })
     } else {
-      let token = jwt.sign(usuario.nome, secret)
+      let token = jwt.sign({
+        usuario: usuario.nome,
+        tipo: usuario.tipo,
+        iss: Date.now(),
+        // exp: Math.floor(Date.now() / 1000) + (1 * 60)
+      }, secret)
       return res.status(200).json(token)
     }
   })
@@ -86,4 +108,4 @@ function autenticar(req, res, next) {
 
 
 
-module.exports = {inserir, listar, listarPorId, excluir, atualizar, autenticar}
+module.exports = { inserir, listar, listarPorId, excluir, atualizar, autenticar }

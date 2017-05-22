@@ -10,48 +10,38 @@ const connection = mysql.createConnection({
 });
 
 function listarTitulos(req, res, next) {
-  var query = 'SELECT * FROM vtab_titulos';
-  var params = [];
+
+  var data = new Date();
+
+  var query = 'SELECT * FROM vtab_titulos WHERE cli_ativado = ? and deltitulo = ? and status = ?';
+  var params = ["s", 0, "vencido"];
   // clienteService.inserir(cliente);
-  if (req.body.inicio && req.body.final) {
-    params = [req.body.inicio, req.body.final]
-    query = 'SELECT * FROM vtab_titulos WHERE datavenc >= ? and datavenc <= ?';
-  }
+  // if (req.body.inicio && req.body.final) {
+  //   params = [req.body.inicio, req.body.final]
+  //   query = 'SELECT * FROM vtab_titulos WHERE datavenc >= ? and datavenc <= ?';
+  // }
 
   connection.query(query, params, function (error, results, fields) {
     if (error) throw error;
 
-    results.forEach(function (element) {
-      clienteService.findByCpf(element.cpf_cnpj).exec(function (error, result) {
-        if (result == null) clienteService.inserir(element); 
-      });
-    });
+    // results.forEach(function (element) {
+    //   clienteService.findByCpf(element.cpf_cnpj).exec(function (error, result) {
+    //     if (result == null) clienteService.inserir(element);
+    //   });
+    // });
     res.status(200).json(results);
   });
 }
 
-function listarClientes(req, res, next) {
+function carregarClientes(req, res, next) {
   connection.query('SELECT * from sis_cliente', function (error, results, fields) {
-    console.log(fields);
     if (error) throw error;
 
     results.forEach(function (element) {
-      clienteService.findByCpf(element.cpf_cnpj).exec(function (error, result) {
-        if (error) throw error;
-        
-        if (result == null) clienteService.inserir(element); 
-      });
+      clienteService.findOneAndUpdate(element);
     });
 
     res.status(500).json("Sucesso");
-  });
-}
-
-function listarConectados(req, res, next) {
-  connection.query('SELECT * from sis_conectados', function (error, results, fields) {
-    console.log(results);
-    if (error) throw error;
-    res.status(500).json(results);
   });
 }
 
@@ -63,4 +53,4 @@ function listarLogs(req, res, next) {
 }
 
 
-module.exports = { listarTitulos, listarClientes, listarConectados, listarLogs }
+module.exports = { listarTitulos, carregarClientes, listarLogs }

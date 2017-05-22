@@ -11,7 +11,6 @@ server.use(bodyParser.urlencoded({extended: true}))
 server.use(bodyParser.json())
 server.use(allowCors)
 server.use(queryParser())
-// server.use(expressValidator)
 //Servidor ouvido a porta
 server.listen(port, function () {
   console.log(`BACKEND is running on port ${port}.`)

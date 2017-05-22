@@ -1,10 +1,9 @@
-// const mysql = require('mysql');
 //Mapeador de conexão com banco de dados MongoDB
 const mongoose = require('mongoose')
 //Conexão com o banco de dados
 mongoose.Promise = global.Promise
-// module.exports = mongoose.connect('mongodb://www.linknetcg.com.br:27019/db_linknet')
-module.exports = mongoose.connect('mongodb://localhost/db_linknet')
+// module.exports = mongoose.connect('mongodb://appLinknet:1425@localhost/db_linknet')
+module.exports = mongoose.connect('mongodb://linknet:1425@localhost/db_linknet')
 //Mensagem de validação em um ambito geral
 mongoose.Error.messages.general.required = "O atributo '{PATH}' é requerido."
 //Mensagem de validação em tipos especificos

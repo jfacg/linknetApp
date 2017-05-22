@@ -5,8 +5,9 @@ const usuarioSchema = new mongoose.Schema({
   login: {type: String, required: true, uppercase: true},
   senha: {type: String, required: true, uppercase: true},
   tipo: {type: String, required: true, uppercase: true, enum: ['ADMIN', 'TECNICO', 'FINANCEIRO']},
-  email: {type: String, required: true, uppercase: true},
-  dataNascimento: {type: Date}
+  email: {type: String, required: true, lowercase: true},
+  dataNascimento: {type: Date},
+  excluido: {type: String, uppercase: true, enum:['S', 'N'], default: 'N' }
 })
 
 module.exports = mongoose.model('Usuario', usuarioSchema)
