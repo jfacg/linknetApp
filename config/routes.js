@@ -48,6 +48,14 @@ module.exports = function (server) {
   router.delete('/reparo/:reparoId', reparoService.excluir)
   router.put('/reparo/:reparoId', reparoService.atualizar)
 
+  //ROTA AGENDA COBRANCA
+  const cobrancaService = require('../api/agenda/cobranca/cobrancaService')
+  router.post('/cobranca', cobrancaService.inserir)
+  router.get('/cobranca', cobrancaService.listar)
+  router.get('/cobranca/:cobrancaId', cobrancaService.listarPorId)
+  router.delete('/cobranca/:cobrancaId', cobrancaService.excluir)
+  router.put('/cobranca/:cobrancaId', cobrancaService.atualizar)
+
 
 
 

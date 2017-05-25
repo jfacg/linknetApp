@@ -12,8 +12,9 @@ function login(req, res, next) {
     if (usuario == null) {
       return res.status(500).json({ msg: 'Usuario ou senha não confere' })
     } else {
-      let token = jwt.sign({ 
+      let token = jwt.sign({
         usuario: usuario.nome,
+        login: usuario.login,
         tipo: usuario.tipo,
         iss: Date.now(),
         // exp: Math.floor(Date.now() / 1000) + (1 * 60)
