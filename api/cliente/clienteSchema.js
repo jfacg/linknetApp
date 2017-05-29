@@ -20,13 +20,20 @@ const clienteSchema = mongoose.Schema({
     cadastro: {type: String},
     login: {type: String, uppercase: true},
     venc: {type: String},
-    rg: {type: String},
+    ip: {type: String},
+    bloqueado: {type: String},
     plano: {type: String, uppercase: true},
     cli_ativado: {type: String, uppercase: true},
-    comodato: {type: String, uppercase: true},
+    comodato: {type: String, uppekrcase: true},
     equipamento: {type: String, uppercase: true},
+    coordenadas: {type: String},
+    data_bloq: {type: Date},
+    data_desbloq: {type: Date},
     vendedor: {type: String, uppercase: true},
-    dias_corte: {type: Number}
+    dias_corte: {type: Number},
+    tit_abertos: {type: Number},
+    tit_vencidos: {type: Number},
+    parc_abertas: {type: Number}
 });
 
 module.exports = mongoose.model('Cliente', clienteSchema);

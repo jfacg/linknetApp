@@ -2,12 +2,14 @@ const mongoose = require('mongoose')
 
 const cobrancaSchema = new mongoose.Schema({
   cliente: {type: String, required: true, uppercase: true},
+  cpf_cnpj: {type: String},
   endereco: {type: String, uppercase: true},
   bairro: {type: String, uppercase: true},
   contato: {type: String, uppercase: true},
   tipo: {type: String, uppercase: true, required: true,},
   observacao: {type: String, uppercase: true},
   valor: {type: Number},
+  titulo: {type: Number},
   tecnico: {type: String, uppercase: true},
   dataVencimento: {type: Date},
   dataAgenda: {type: Date},

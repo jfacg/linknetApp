@@ -4,3 +4,5 @@ const server = require('./config/server')
 require('./config/database')
 //Import das rotas
 require('./config/routes')(server)
+
+require('./config/carregar')

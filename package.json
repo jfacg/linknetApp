@@ -17,6 +17,7 @@
     "lodash": "^4.17.4",
     "mikronode": "^2.0.0",
     "mkauth-node-api": "^1.0.1",
+    "moment": "^2.18.1",
     "mongoose": "^4.8.1",
     "mongoose-paginate": "^5.0.3",
     "mongoose-unique-validator": "^1.0.4",

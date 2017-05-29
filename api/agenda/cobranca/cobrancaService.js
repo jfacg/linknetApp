@@ -49,6 +49,18 @@ function listarPorId(req, res) {
   })
 }
 
+function listarPorTitulo(req, res) {
+  Cobranca.find(
+    {titulo: req.params.titulo},
+    function(error, result) {
+      if(error) {
+        res.status(500).json({error})
+      } else {
+        res.status(200).json(result)
+    }
+  })
+}
+
 function excluir(req, res) {
   Cobranca.remove({_id: req.params.cobrancaId}, function(error) {
     if(error) {
@@ -76,4 +88,4 @@ function atualizar(req, res) {
   })
 }
 
-module.exports = {inserir, listar, listarPorId, excluir, atualizar}
+module.exports = {inserir, listar, listarPorId, excluir, atualizar, listarPorTitulo}

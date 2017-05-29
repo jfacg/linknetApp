@@ -53,11 +53,19 @@ module.exports = function (server) {
   router.post('/cobranca', cobrancaService.inserir)
   router.get('/cobranca', cobrancaService.listar)
   router.get('/cobranca/:cobrancaId', cobrancaService.listarPorId)
+  router.get('/cobranca/titulo/:titulo', cobrancaService.listarPorTitulo)
   router.delete('/cobranca/:cobrancaId', cobrancaService.excluir)
   router.put('/cobranca/:cobrancaId', cobrancaService.atualizar)
 
+  //ROTA MK-AUTH
+  const mkauthService = require('../api/mkauth/mkauth')
+  router.get('/mk/carregarTitulos', mkauthService.carregarTitulos);
+  router.get('/mk/carregarClientes', mkauthService.carregarClientes);
+  router.get('/mk/carregarTitulosVencidos', mkauthService.carregarTitulosVencidos);
 
-
+  //ROTA TITULO
+  const tituloService = require('../api/titulo/tituloService')
+  router.get('/titulo', tituloService.titulosVencidos)
 
 
   //ROTAS CAIXA
@@ -100,10 +108,6 @@ module.exports = function (server) {
   router.delete('/agenda/:agendaId', agendaService.excluir)
   router.put('/agenda/:agendaId', agendaService.atualizar)
 
-  //ROTA MK-AUTH
-  const mkauthService = require('../api/mkauth/mkauth')
-  router.post('/mk/listarTitulos', mkauthService.listarTitulos);
-  router.get('/mk/listarClientes', mkauthService.carregarClientes);
 
   //ROTA MK
   const mikrotikService = require('../api/mikrotik/mikrotik')
