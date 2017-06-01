@@ -67,6 +67,17 @@ module.exports = function (server) {
   const tituloService = require('../api/titulo/tituloService')
   router.get('/titulo', tituloService.titulosVencidos)
 
+  //ROTA CLIENTE
+  const clienteService = require('../api/cliente/clienteService')
+  router.get('/cliente', clienteService.listar)
+  router.get('/cliente/:nome', clienteService.findByName)
+
+  //ROTA CREDITO
+  const creditoService = require('../api/credito/creditoService')
+  router.get('/credito', creditoService.listar)
+  router.post('/credito', creditoService.save)
+  router.put('/credito/:creditoId', creditoService.atualizar)
+  router.delete('/credito/:creditoId', creditoService.excluir)
 
   //ROTAS CAIXA
   const caixaService = require('../api/caixa/caixaService')
@@ -80,13 +91,13 @@ module.exports = function (server) {
   router.get('/caixaContador', caixaService.contador)
 
   //ROTAS CREDITO
-  const creditoService = require('../api/caixa/creditoService')
-  router.post('/credito/:caixaId', creditoService.inserir)
-  router.get('/credito/:caixaId', creditoService.listar)
-  router.put('/credito/:caixaId', creditoService.atualizar)
-  router.delete('/credito/:caixaId/:creditoId', creditoService.excluir)
-  router.get('/creditoCount/:caixaId', creditoService.count)
-  router.get('/credito/:caixaId/:skip/:limit', creditoService.paginate)
+  const creditoService1 = require('../api/caixa/creditoService')
+  router.post('/creditoold/:caixaId', creditoService1.inserir)
+  router.get('/creditoold/:caixaId', creditoService1.listar)
+  router.put('/creditoold/:caixaId', creditoService1.atualizar)
+  router.delete('/creditoold/:caixaId/:creditoId', creditoService1.excluir)
+  router.get('/creditooldCount/:caixaId', creditoService1.count)
+  router.get('/creditoold/:caixaId/:skip/:limit', creditoService1.paginate)
 
   //ROTAS DEBITO
   const debitoService = require('../api/caixa/debitoService')

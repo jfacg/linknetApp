@@ -1,5 +1,13 @@
 const Titulo = require('./tituloSchema')
 const moment = require('moment')
+const mysql = require('mysql');
+
+const connection = mysql.createConnection({
+host: '191.253.16.150',
+user: 'linknet',
+password: '1001.',
+database: 'mkradius'
+});
 
 function save(obj) {
     const titulo = new Titulo
@@ -46,21 +54,38 @@ function listar(req, res) {
 }
 
 function titulosVencidos(req, res) {
-  let data = moment().format()
-  Titulo.find({$and: [
-    {datavenc: {$lt: data}},
-    {deltitulo: 0},
-    {status: {$ne: 'pago'}}
-    // {cli_ativado: 's'}
-    ]
-  },
-    function(error, result) {
-      if(error) {
-        res.status(500).json({error})
-      } else {
-        res.status(200).json(result)
-      }
+
+  let data = moment().subtract(1, 'days').format()
+  let params = ['s', 0, data, 'pago']
+  let query = `SELECT * FROM vtab_titulos WHERE
+              cli_ativado = ? and
+              deltitulo = ? and
+              datavenc < ? and
+              status != ?`
+  let count = 0
+  connection.query(query, params, function (error, results, fields) {
+    if(error) {
+      res.status(500).json(error)
+    } else{
+      res.status(200).json(results)
+    }
   })
+
+  // let data = moment().format()
+  // Titulo.find({$and: [
+  //   {datavenc: {$lt: data}},
+  //   {deltitulo: 0},
+  //   {status: {$ne: 'pago'}},
+  //   {cli_ativado: 's'}
+  //   ]
+  // },
+  //   function(error, result) {
+  //     if(error) {
+  //       res.status(500).json({error})
+  //     } else {
+  //       res.status(200).json(result)
+  //     }
+  // })
 }
 
 

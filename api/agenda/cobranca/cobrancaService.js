@@ -23,7 +23,7 @@ function excluir(req, res) {
       if (error) {
         res.status(500).json({ error })
       } else {
-        res.status(500).send()
+        res.status(200).send()
       }
     })
 }

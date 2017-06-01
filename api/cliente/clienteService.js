@@ -3,38 +3,28 @@ const Cliente = require('./clienteSchema');
 function save(obj) {
     const cliente = new Cliente;
     cliente = obj
-
-    // cliente.nome = obj.nome;
-    // cliente.cpf_cnpj = obj.cpf_cnpj;
-    // cliente.nascimento = obj.nascimento;
-    // cliente.email = obj.email;
-    // cliente.fone = obj.fone;
-    // cliente.celular = obj.celular;
-    // cliente.celular2 = obj.celular2;
-    // cliente.endereco = obj.endereco;
-    // cliente.numero = obj.numero;
-    // cliente.complemento = obj.complemento;
-    // cliente.bairro = obj.bairro;
-    // cliente.cidade = obj.cidade;
-    // cliente.cep = obj.cep;
-    // cliente.estado = obj.estado;
-    // cliente.coordenadas = obj.coordenadas;
-    // cliente.obs = obj.obs;
-    // cliente.cadastro = obj.cadastro;
-    // cliente.login = obj.login;
-    // cliente.venc = obj.venc;
-    // cliente.rg = obj.rg;
-    // cliente.plano = obj.plano;
-    // cliente.cli_ativado = obj.cli_ativado;
-    // cliente.comodato = obj.comodato;
-    // cliente.equipamento = obj.equipamento;
-    // cliente.vendedor = obj.vendedor
-    // cliente.dias_corte = obj.dias_corte;
-
     cliente.save(function (error) {
         if (error) {
             return error;
         }
+    });
+};
+
+function listar(req, res) {
+  Cliente.find({},
+    function(error, result) {
+      if(error) {
+        res.status(500).json({error})
+      } else {
+        res.status(200).json(result)
+      }
+  })
+}
+
+function findByName(req, res, next) {
+    return Cliente.findOne({ nome: req.params.nome }, function (error, result) {
+        if (error) return error;
+        return result;
     });
 };
 
@@ -63,4 +53,4 @@ function findOneAndUpdate(obj) {
 
 
 
-module.exports = { save, findByCpf, findOneAndUpdate};
+module.exports = { save, findByCpf, findOneAndUpdate, listar, findByName};
