@@ -1,4 +1,12 @@
 const Cliente = require('./clienteSchema');
+const mysql = require('mysql');
+
+const connection = mysql.createConnection({
+host: '191.253.16.150',
+user: 'linknet',
+password: '1001.',
+database: 'mkradius'
+});
 
 function save(obj) {
     const cliente = new Cliente;
@@ -11,14 +19,11 @@ function save(obj) {
 };
 
 function listar(req, res) {
-  Cliente.find({},
-    function(error, result) {
-      if(error) {
-        res.status(500).json({error})
-      } else {
-        res.status(200).json(result)
-      }
-  })
+  let query = 'SELECT * FROM sis_cliente';
+  connection.query(query, function (error, results, fields) {
+    if (error) throw error;
+    res.status(200).json(results);
+  });
 }
 
 function findByName(req, res, next) {

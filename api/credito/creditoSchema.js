@@ -5,6 +5,7 @@ const creditoSchema = new mongoose.Schema({
   mes: {type: String, uppercase: true},
   descricao: {type: String, required: false, uppercase: true},
   cliente: {type: String, uppercase: true},
+  clienteNome: {type: String, uppercase: true},
   valor: {type: Number, required: true, min: 0},
   coletor: {type: String, required: true},
   repassado: {type: String, enum:['S', 'N'], default: 'N'},

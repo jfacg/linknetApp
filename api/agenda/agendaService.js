@@ -1,19 +1,19 @@
-const Agenda = require('./agendaSchema')
+const Agenda = require('./agenda')
 
 function inserir (req, res, next) {
   const agenda =  new Agenda;
-  agenda.servico = req.body.servico;
-  agenda.dataAgenda = req.body.dataAgenda;
-  agenda.horaAgenda = req.body.horaAgenda;
-  agenda.dataRegistro = req.body.dataRegistro;
+  agenda.tipoServico = req.body.tipoServico;
+  agenda.atividade = req.body.atividade;
   agenda.solicitante = req.body.solicitante;
+  agenda.tecnico = req.body.tecnico;
+  agenda.contato = req.body.contato;
   agenda.endereco = req.body.endereco;
   agenda.bairro = req.body.bairro;
-  agenda.contato = req.body.contato;
+  agenda.dataAgenda = req.body.dataAgenda;
+  agenda.horaAgenda = req.body.horaAgenda;
   agenda.informacoes = req.body.informacoes;
-  agenda.tecnico = req.body.tecnico;
-  agenda.material = req.body.material;
   agenda.baixa = req.body.baixa;
+  agenda.status = req.body.status;
 
   agenda.save(function (error) {
     if (error) {

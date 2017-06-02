@@ -109,17 +109,6 @@ module.exports = function (server) {
   router.get('/debito/:caixaId/:skip/:limit', debitoService.paginate)
 
 
-
-
-  //ROTA AGENDA
-  const agendaService = require('../api/agenda/agendaService')
-  router.post('/agenda', agendaService.inserir)
-  router.get('/agenda', agendaService.listar)
-  router.get('/agenda/:agendaId', agendaService.listarPorId)
-  router.delete('/agenda/:agendaId', agendaService.excluir)
-  router.put('/agenda/:agendaId', agendaService.atualizar)
-
-
   //ROTA MK
   const mikrotikService = require('../api/mikrotik/mikrotik')
   router.get('/mikrotik/listar', mikrotikService.listar);
